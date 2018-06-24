@@ -25,22 +25,26 @@ def get_data():
 				playing = False
 		data.append(board)
 		if player == 1:
-			labels.append(1) #win for player1
+			labels.append([1,0]) #win for player1
 			
 		else:
-			labels.append(0) #no win for player1
+			labels.append([0,1]) #no win for player1
 		print('iteration: ' + str(iteration))
 	return [data, labels]
 def get_model():
 	tflearn.init_graph(num_cores = 4)
 	net = tflearn.input_data(shape=[None, board_side_length*board_side_length])
 	#Hidden Layer, change dimensions/number of nodes here
+	net = tflearn.fully_connected(net, 256,activation = 'relu')
+	net = tflearn.dropout(net, 0.8)
 	net = tflearn.fully_connected(net, 128,activation = 'relu')
 	net = tflearn.dropout(net, 0.8)
 	net = tflearn.fully_connected(net, 64,activation = 'relu')
 	net = tflearn.dropout(net, 0.8)
-	net = tflearn.fully_connected(net, 1, activation='relu')
-	net = tflearn.regression(net, optimizer='sgd', loss='mean_square')
+	net = tflearn.fully_connected(net, 32,activation = 'relu')
+	net = tflearn.dropout(net, 0.8)
+	net = tflearn.fully_connected(net, 2, activation='softmax')
+	net = tflearn.regression(net, optimizer='adam', metric = 'accuracy', loss='categorical_crossentropy')
 	model = tflearn.DNN(net)
 	return model
 	
@@ -49,9 +53,9 @@ def train_model():
 	print('Getting data...')
 	input_data, labels = get_data()	
 	X = np.reshape(input_data, [training_iterations, board_side_length*board_side_length])
-	Y = np.reshape(labels, [training_iterations,1])	
+	Y = np.reshape(labels, [training_iterations,2])	
 	model = get_model()
-	model.fit(X, Y, n_epoch = 1)
+	model.fit(X, Y, n_epoch = 100, show_metric=True)
 	return model
 
 def copy_board(board):
@@ -90,12 +94,12 @@ print('model saved')
 
 num_played = 0
 num_won = 0
-for games in range(30):
+for games in range(10):
 	playing = True
 	player = 1
 	board = f.initialise_board(board_side_length, board_side_length)
 	while playing:
-		f.print_board(board)
+		#f.print_board(board)
 		if player == 1:
 			#Change Player1 here, options: ai_turn, human_turn, random_turn
 			pos, board = ai_turn(player, model, board)
