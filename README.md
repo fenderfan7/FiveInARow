@@ -19,7 +19,7 @@ http://britlovefan.github.io/AI_Five-in-row/
 
 ## State of this project
 
-The AI-Player is at best a little better than the random player, sometimes even worse. But the classification is having an accuracy in testing of around 0.65, which is not really good, but better than random (which would be 0.5). These values are results from tests with a board side length of five, above that the AI becomes significantly worse.
+The AI-Player is at best a little better than the random player, sometimes even worse. But the classification is having an accuracy in testing of around 0.65, which is not really good, but better than random (which would be 0.5).
 
 Feel free to use the code for your own project at your own risk
 
