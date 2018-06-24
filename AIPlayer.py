@@ -43,8 +43,11 @@ def get_model():
 	net = tflearn.input_data(shape=[None, board_side_length, board_side_length, 1])
 	#Hidden Layer, change dimensions/number of nodes here
 	net = tflearn.conv_2d(net, 8, 5,activation = 'relu', padding = 'valid')
+	net = tflearn.dropout(net, 0.8)
 	net = tflearn.conv_2d(net, 8, 5,activation = 'relu', padding = 'same')
+	net = tflearn.dropout(net, 0.8)
 	net = tflearn.conv_2d(net, 8, 5,activation = 'relu', padding = 'same')
+	net = tflearn.dropout(net, 0.8)
 	net = tflearn.conv_2d(net, 8, 5,activation = 'relu', padding = 'same')
 	
 	net = tflearn.fully_connected(net, 2, activation='softmax')
