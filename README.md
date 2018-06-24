@@ -18,4 +18,4 @@ State of this project
 
 The AI-Player is at best a little better than the random player, sometimes even worse. But it acts differently than the random player, which shows, that the AI is generally working. The reason for this could be, that it is just too difficult for the AI to figure out what a good move is, similar to what was noted in the stanford paper above.
 
-Feel free to use the code for your own project at your own risk, I can give no guarantees.
+Feel free to use the code for your own project at your own risk
