@@ -1,9 +1,9 @@
 from random import randint
 
-def initialiseBoard(rows, columns):
+def initialise_board(rows, columns):
 	return [[0 for i in range(columns)] for i in range(rows)]
 	
-def printBoard(board):
+def print_board(board):
 	rows = len(board)
 	cols = len(board[0])
 	line = '   '
@@ -38,48 +38,48 @@ def printBoard(board):
 		line = ''
 
 
-def humanTurn(playerNr, board):
+def human_turn(player_nr, board):
 	while 1:
-		print('It\'s Player' + str(playerNr) + '\'s turn! Setting mark at: row column')
+		print('It\'s Player' + str(player_nr) + '\'s turn! Setting mark at: row column')
 		inputString = input()
 		pos = [int(s) for s in inputString.split() if s.isdigit()]
 		if len(pos) == 2:
 			if pos[0] < len(board) and pos[1] < len(board[0]) and board[pos[0]][pos[1]] == 0:
 				break
 		print('ERROR: Try Again!')
-	board[pos[0]][pos[1]] = playerNr
+	board[pos[0]][pos[1]] = player_nr
 	return pos, board
 	
-def randomTurn(playerNr, board):
+def random_turn(player_nr, board):
 	while 1:
 		pos = [randint(0, len(board)-1), randint(0, len(board[0]))-1]
 		if board[pos[0]][pos[1]] == 0:
 			break
-	board[pos[0]][pos[1]] = playerNr
+	board[pos[0]][pos[1]] = player_nr
 	return pos, board
 
 
-def checkHasWon(board, playerNr, lastMoveRow, lastMoveCol):
+def check_has_won(board, player_nr, last_move_row, last_move_col):
 	won = False
 	counter = 0
-	minRow = lastMoveRow-4 if lastMoveRow-4 >= 0 else 0
-	maxRow = lastMoveRow+4 if lastMoveRow+4 < len(board) else len(board)-1
-	minCol = lastMoveCol-4 if lastMoveCol-4 >= 0 else 0
-	maxCol = lastMoveCol+4 if lastMoveCol+4 < len(board[0]) else len(board[0])-1
+	min_row = last_move_row-4 if last_move_row-4 >= 0 else 0
+	max_row = last_move_row+4 if last_move_row+4 < len(board) else len(board)-1
+	min_col = last_move_col-4 if last_move_col-4 >= 0 else 0
+	max_col = last_move_col+4 if last_move_col+4 < len(board[0]) else len(board[0])-1
 	
-	minRowOffset = minRow-lastMoveRow
-	minColOffset = minCol-lastMoveCol
-	minOffset = minRowOffset if minRowOffset >= minColOffset else minColOffset
-	maxRowOffset = maxRow-lastMoveRow
-	maxColOffset = maxCol-lastMoveCol
-	maxOffset = maxRowOffset if maxRowOffset <=  maxColOffset else maxColOffset
+	min_row_offset = min_row-last_move_row
+	min_col_offset = min_col-last_move_col
+	min_offset = min_row_offset if min_row_offset >= min_col_offset else min_col_offset
+	max_rowOffset = max_row-last_move_row
+	max_colOffset = max_col-last_move_col
+	max_offset = max_rowOffset if max_rowOffset <=  max_colOffset else max_colOffset
 	
-	minOffsetUp = -maxRowOffset if -maxRowOffset >= minColOffset else minColOffset #negative Result
-	maxOffsetUp = -minRowOffset if -minRowOffset <= maxColOffset else maxColOffset #positive Result
+	min_offsetUp = -max_rowOffset if -max_rowOffset >= min_col_offset else min_col_offset #negative Result
+	max_offsetUp = -min_row_offset if -min_row_offset <= max_colOffset else max_colOffset #positive Result
 	
 	#Check horizontally
-	for row in range(minRow, maxRow+1):
-		if(board[row][lastMoveCol] == playerNr):
+	for row in range(min_row, max_row+1):
+		if(board[row][last_move_col] == player_nr):
 			counter+=1
 			if counter >= 5:
 				return True
@@ -87,8 +87,8 @@ def checkHasWon(board, playerNr, lastMoveRow, lastMoveCol):
 			counter = 0
 	#Check vertically
 	counter = 0
-	for col in range(minCol, maxCol+1):
-		if(board[lastMoveRow][col] == playerNr):
+	for col in range(min_col, max_col+1):
+		if(board[last_move_row][col] == player_nr):
 			counter+=1
 			if counter >= 5:
 				return True
@@ -96,8 +96,8 @@ def checkHasWon(board, playerNr, lastMoveRow, lastMoveCol):
 			counter = 0
 	#Check diagonally up
 	counter = 0
-	for offset in range(minOffsetUp, maxOffsetUp+1):
-		if(board[lastMoveRow - offset][lastMoveCol + offset] == playerNr):
+	for offset in range(min_offsetUp, max_offsetUp+1):
+		if(board[last_move_row - offset][last_move_col + offset] == player_nr):
 			counter+=1
 			if counter >= 5:
 				return True
@@ -105,8 +105,8 @@ def checkHasWon(board, playerNr, lastMoveRow, lastMoveCol):
 			counter = 0
 	#Check diagonally down
 	counter = 0
-	for offset in range(minOffset, maxOffset+1):
-		if(board[lastMoveRow + offset][lastMoveCol + offset] == playerNr):
+	for offset in range(min_offset, max_offset+1):
+		if(board[last_move_row + offset][last_move_col + offset] == player_nr):
 			#print('curOffset' + str(offset))
 			counter+=1
 			if counter >= 5:
@@ -115,7 +115,7 @@ def checkHasWon(board, playerNr, lastMoveRow, lastMoveCol):
 			counter = 0
 	return False
 
-def checkBoardFull(board):
+def check_board_full(board):
 	for row in range(len(board)):
 		for col in range(len(board[0])):
 			if board[row][col] == 0:
@@ -126,7 +126,7 @@ def checkBoardFull(board):
 
 
 
-# board = initialiseBoard(20,20)
+# board = initialise_board(20,20)
 # board[2][4] = 2
 # board[6][4] = 1
 # board[7][3] = 1
