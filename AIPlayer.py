@@ -8,7 +8,7 @@ learning_rate = 0.01
 training_iterations = 50000
 # Change board dimensions here, Warning: Can only load model, if board dimensions stay the same!
 board_side_length = 5
-board_history_length = 5 #must be smaller than 6
+board_history_length = 5 #Must be smaller than 8
 
 def get_data():
 	data = []
@@ -104,7 +104,7 @@ def test_model(model):
 		
 model = train_model()
 test_model(model)
-model.save("model2.tfl")
+model.save("model3.tfl")
 print('model saved')
 #*******Uncomment below to load the last saved model, Warning: Dimensions must be still the same*******
 # model = get_model()
@@ -117,14 +117,8 @@ for games in range(100):
 	playing = True
 	player = 1
 	board = f.initialise_board(board_side_length, board_side_length)
-	# board[2][4] = 2
-	# board[6][4] = 1
-	# board[7][3] = 1
-	# board[8][2] = 1
-	# board[9][1] = 0
-	# board[10][0] = 1
 	while playing:
-		#f.print_board(board)
+		f.print_board(board)
 		if player == 1:
 			#Change Player1 here, options: ai_turn, human_turn, random_turn
 			pos, board = ai_turn(player, model, board)
@@ -137,7 +131,7 @@ for games in range(100):
 		if f.check_board_full(board):
 			playing = False
 		
-	#f.print_board(board)
+	f.print_board(board)
 	if playing:
 		print('*****Player' + str(player) + ' has won*****')
 		if player ==1:
@@ -147,4 +141,4 @@ for games in range(100):
 		print('*****It\'s a draw*****')
 	num_played += 1
 	print(str(pos))
-print(str(num_won/num_played))
+print('Winrate: ' + str(num_won/num_played))
